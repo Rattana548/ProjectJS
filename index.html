@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Market MINI</title>
+    <link rel="stylesheet" href="./Css/Css.css">
+</head>
+<body>
+<!--contianer -->
+<script type="module" src="server.js">
+    let {app,dbCon} = require('./server')
+    function test() {
+        app.app.post('/index',(req, res)=>{
+            let name = document.forms["test"]["name"].value;
+            let price = document.forms["test"]["price"].value;
+            if(!name || !price){
+                return res.status(400).send({error:true,message:"name and price must be provided"})
+                }else{
+                    dbCon.dbCon.query("INSERT INTO Shop_API (name,price) VALUES(?,?)",[name,price],(err, result)=>{
+                    if(err) throw err
+                        return res.send({error:false,message:"Successfully",data:result})
+                })
+            }
+        })
+    }
+        
+</script>  
+
+    <div class="container">
+        <form name="test" onsubmit="return test()" method="post">
+            <input type="text" name="name">
+            <input type="text" name="price">
+            <input type="submit" value="submit" name="submit">
+        </form>
+
+
+
+
+    </div>
+
+</body>
+</html>
